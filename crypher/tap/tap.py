@@ -4,11 +4,11 @@
 
 # FUNCTIONS
 #
-# def encodeLine(strLine: str) -> str:
-#     - Encode a single line
+# def encodeStr(strLine: str) -> str:
+#     - Encode a string
 #
-# def decodeLine(strLine: str) -> str:
-#     - Decode a single line
+# def decodeStr(strLine: str) -> str:
+#     - Decode a string
 #
 # def encode(strInputFile: str, strOutputFile: str) -> None:
 #     - Encode a file
@@ -80,7 +80,7 @@ encodeDict = {
     'Z' : '5,5'
 }
 
-def encodeLine(strLine: str) -> str:
+def encodeStr(strLine: str) -> str:
     
     strEncodedText = '' 
 
@@ -88,11 +88,13 @@ def encodeLine(strLine: str) -> str:
 
     for strLetter in strLine:
         
-        # skip whitespace
         if strLetter.isspace():
             continue
 
         strEncodedLetter = encodeDict.get(strLetter.upper())
+
+        if not strEncodedLetter:
+            continue
 
         # if the character was not encoded (not in dict)
         if not strEncodedLetter:
@@ -108,7 +110,7 @@ def encodeLine(strLine: str) -> str:
     
     return strEncodedText
 
-def decodeLine(strLine: str) -> str:
+def decodeStr(strLine: str, bProcessBadInput=False) -> str:
 
     strEncodedPairsM = strLine.split('|')
     strDecodedText = ''
@@ -119,22 +121,25 @@ def decodeLine(strLine: str) -> str:
 
         # pair was not in decodeDict
         if not strDecodedPair:
-            strDecodedPair = f'<? {strPair} ?>'
+
+            if True == bProcessBadInput:
+                strDecodedPair = f'<?{strPair}?>'
+            else:
+                continue
 
         strDecodedText += strDecodedPair
 
     return strDecodedText
 
 def encode(strInputFile: str, strOutputFile: str) -> None:
-    tapcode(True, strInputFile, strOutputFile)
+    coder(True, strInputFile, strOutputFile)
 
 def decode(strInputFile: str, strOutputFile: str) -> None:
-    tapcode(False, strInputFile, strOutputFile)
+    coder(False, strInputFile, strOutputFile)
 
-def tapcode(bEncode: bool, strInputFile: str, strOutputFile: str) -> None:
+def coder(bEncode: bool, strInputFile: str, strOutputFile: str) -> None:
     
     if strOutputFile:
-
         outputFile = open(strOutputFile, 'w')
 
     inputFile = open(strInputFile, 'r')
@@ -144,17 +149,17 @@ def tapcode(bEncode: bool, strInputFile: str, strOutputFile: str) -> None:
         
         # encode
         if True == bEncode:
-            strResult = encodeLine(strLine)
+            strResult = encodeStr(strLine)
 
         # decode
         else:
-            strResult = decodeLine(strLine)
+            strResult = decodeStr(strLine)
 
-        # print to console
+        # write to file
         if strOutputFile:
             outputFile.write(strResult)
         
-        # write to file
+        # print to console
         else:
             print(strResult)
 
