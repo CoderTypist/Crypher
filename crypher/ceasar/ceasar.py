@@ -4,10 +4,10 @@
 
 # FUNCTIONS
 #
-# def encodeStr(strLine: str, iShift: int, bKeepNonAlpha=False) -> str:
+# def encodeStr(strLine: str, iShift: int, bKeepNonAlpha=True) -> str:
 #     - Encode a string
 #
-# def decodeStr(strLine: str, iShift: int, bKeepNonAlpha=False) -> str:
+# def decodeStr(strLine: str, iShift: int, bKeepNonAlpha=True) -> str:
 #     - Decode a string
 #
 # def encode(strInputFile: str, strOutputFile: str, iShift: int) -> None:
