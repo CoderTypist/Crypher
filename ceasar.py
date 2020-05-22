@@ -2,50 +2,66 @@
 
 # Author: Christian Bargraser
 
+# FUNCTIONS
+#
+# def printFile(strFileName: str) -> None:
+#     - prints the specified file 
+
+import os
+import sys
 import argparse
-from argparse import RawTextHelpFormatter
 import crypher.ceasar as cea
+import crypher.cryparse as cyp
 
-strEpilog = '''
-  **************
-  * UTSA - NSA *
-  **************
-  --- CAE-CO ---
-                
-'''
-
-parser = argparse.ArgumentParser(epilog=strEpilog, formatter_class=RawTextHelpFormatter)
-
-group_action = parser.add_mutually_exclusive_group(required=True)
-group_action.add_argument('-e', '--encode', help='plaintext file')
-group_action.add_argument('-d', '--decode', help='ceasar cipher encoded file')
+parser = argparse.ArgumentParser()
+cyp.addCipherArgs(parser)
 
 group_shift = parser.add_mutually_exclusive_group(required=True)
 group_shift.add_argument('-s', '--shift', type=int, help='number of times to shift letter (absolute value will be used)')
-group_shift.add_argument('-b', '--bruteforce', help='try all combinations', action='store_true')
+group_shift.add_argument('-b', '--bruteforce', action='store_true', help='try all combinations')
 
-parser.add_argument('-o', '--output', help='output file')
 dictArgs = vars(parser.parse_args())
 
+if None != dictArgs.get('input') and not os.path.isfile(dictArgs.get('input')):
+    print('No such file:', dictArgs.get('input'))
+    print()
+    parser.print_help()
+    sys.exit(1)
+
+coder = cea.CeasarCoder()
+
+# not bruceforce
 if False == dictArgs.get('bruteforce'):
 
-    if dictArgs.get('encode'):
-        cea.encode(dictArgs.get('encode'), dictArgs.get('output'), dictArgs.get('shift'))
+    if cyp.isEncodeStr(dictArgs):
+        print(coder.encodeStr(dictArgs.get('text'), dictArgs.get('shift'), strOutputFile=dictArgs.get('output')))
 
+    elif cyp.isEncodeFile(dictArgs):
+        print(coder.encodeFile(dictArgs.get('input'), dictArgs.get('shift'), strOutputFile=dictArgs.get('output')))
+
+    elif cyp.isDecodeStr(dictArgs):
+        print(coder.decodeStr(dictArgs.get('text'), dictArgs.get('shift'), strOutputFile=dictArgs.get('output')))
+    
     else:
-        cea.decode(dictArgs.get('decode'), dictArgs.get('output'), dictArgs.get('shift'))
+        print(coder.decodeFile(dictArgs.get('input'), dictArgs.get('shift'), strOutputFile=dictArgs.get('output')))
 
 # bruteforce
 else:
 
-    if dictArgs.get('encode'):
-        strInputFile = dictArgs.get('encode')
-        funcCoder = cea.encode
-    
-    else:
-        strInputFile = dictArgs.get('decode')
-        funcCoder = cea.decode
+    coder.bPrintShift = True
 
-    for i in range(0, 26):
-        print(f'{i:>2} ', end='')
-        funcCoder(strInputFile, dictArgs.get('output'), i)
+    if cyp.isEncodeStr(dictArgs):
+        for i in range(0, len(coder.strAlphaM)):
+            print(coder.encodeStr(dictArgs.get('text'), i, strOutputFile=dictArgs.get('output')))
+    
+    elif cyp.isEncodeFile(dictArgs):
+        for i in range(0, len(coder.strAlphaM)):
+            print(coder.encodeFile(dictArgs.get('input'), i, strOutputFile=dictArgs.get('output')))
+
+    elif cyp.isDecodeStr(dictArgs):
+        for i in range(0, len(coder.strAlphaM)):
+            print(coder.decodeStr(dictArgs.get('text'), i, strOutputFile=dictArgs.get('output')))
+
+    else:
+        for i in range(0, len(coder.strAlphaM)):
+            print(coder.decodeFile(dictArgs.get('input'), i, strOutputFile=dictArgs.get('output')))

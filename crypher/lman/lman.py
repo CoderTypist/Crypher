@@ -41,6 +41,11 @@ def rot(arr: list, iRot: int) -> list:
         return arr
 
     iLast = len(arr) - 1
+
+    # len(arr) == 1
+    if 0 == iLast:
+        return arr
+
     for i in range(0, abs(iRot)):
 
         if iRot < 0:

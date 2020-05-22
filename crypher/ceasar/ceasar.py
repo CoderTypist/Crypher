@@ -2,110 +2,176 @@
 
 # Author: Christian Bargraser
 
+# INSTANCE ATTRIBUTES
+##################
+# 
+# self.strAlphaM: list[str]
+#     - Alphabet used by the ceasar cipher
+#
+# self.iLast: str
+#     - Index of the last character in self.strAlphaM
+# 
+# self.dictCipher: dict[str, int]
+#     - Index for a letter in strAlphaM
+#     - key:str
+#     - value: int
+#
+# self.bKeepNonAlpha: bool
+#     - Keep characters that are not letters
+#
+# self.bPrintShift: bool
+#     - Include the number of shifts performed in the result
+#
 # FUNCTIONS
-#
-# def encodeStr(strLine: str, iShift: int, bKeepNonAlpha=True) -> str:
+###########
+# 
+# def __init__(self, strAlphaM=lman.listAlpha(), bKeepNonAlpha=True):
+#     - Create new instance of CeasarCoder
+#     - strAlphaM is set to a list with 'A' to 'Z' inclusive
+#     - strAlphaM allows the CeasarCoder to have a different alphabet
+# 
+# def encodeStr(self, strLine: str, iShift: int, strOutputFile=None) -> str:
 #     - Encode a string
-#
-# def decodeStr(strLine: str, iShift: int, bKeepNonAlpha=True) -> str:
+#     - Invokes coderStr()
+# 
+# def decodeStr(self, strLine: str, iShift: int, strOutputFile=None) -> str:
 #     - Decode a string
-#
-# def encode(strInputFile: str, strOutputFile: str, iShift: int) -> None:
+#     - Invokes coderStr()
+# 
+# def coderStr(self, bEncode: bool, strLine: str, iShift: int, strOutputFile=None) -> str:
+#     - Either encode or decode a string
+#     - Has the option to save output to a file
+# 
+# def encodeFile(self, strInputFile: str, iShift: int, strOutputFile=None, bRetStr=True) -> Union[str,None]:
 #     - Encode a file
-#
-# def decode(strInputFile: str, strOutputFile: str, iShift: int) -> None:
+#     - Invokes coderFile()
+# 
+# def decodeFile(self, strInputFile: str, iShift: int, strOutputFile=None, bRetStr=True) -> Union[str,None]:
 #     - Decode a file
-#
-# def ceasarcode(bEncode: bool, strInputFile: str, strOutputFile: str, iShift: int) -> None:
+#     - Invokes coderFile()
+# 
+# def coderFile(self, bEncode: bool, strInputFile: str, iShift: int, strOutputFile=None, bRetStr=True) -> Union[str,None]:
 #     - Either encode or decode a file
+#     - Has the option to save output to a file
+#     - If the input file is large, a large string (which may not be used) could be created.
+#           For this reason, returning a string is optional.
 
-def encodeStr(strLine: str, iShift: int, bKeepNonAlpha=True) -> str:
+from .. import lman
+from typing import Union
+
+class CeasarCoder:
+
+    def __init__(self, strAlphaM=lman.listAlpha(), bKeepNonAlpha=True):
+
+        self.strAlphaM = strAlphaM
+        self.iLast = len(strAlphaM) - 1
+        self.dictCipher = {}
+        self.bKeepNonAlpha = True
+        self.bPrintShift = False
+
+        i = 0
+        for strLetter in self.strAlphaM:
+            self.dictCipher[strLetter] = i
+            i = i+1
     
-    strLine = strLine.upper()
-    strEncoded = ''
+    def encodeStr(self, strLine: str, iShift: int, strOutputFile=None) -> str:
+        return self.coderStr(True, strLine, iShift, strOutputFile=strOutputFile)
 
-    for strLetter in strLine:
+    def decodeStr(self, strLine: str, iShift: int, strOutputFile=None) -> str:
+        return self.coderStr(False, strLine, iShift, strOutputFile=strOutputFile)
+
+    def coderStr(self, bEncode: bool, strLine: str, iShift: int, strOutputFile=None) -> str:
         
-        # skip non-alphabetic characters
-        if not strLetter.isalpha():
+        iShift = iShift % (len(self.strAlphaM)-1)
+        strLine = strLine.upper()
+        strEncoded = ''
 
-            if True == bKeepNonAlpha:
-                strEncoded += strLetter
-
-            continue
-
-        for i in range(0, abs(iShift)):
-
-            if 'Z' == strLetter:
-                strLetter = 'A'
-
-            else:
-                strLetter = chr(ord(strLetter)+1)
-
-        strEncoded += strLetter
-    
-    return strEncoded
-
-def decodeStr(strLine: str, iShift: int, bKeepNonAlpha=True) -> str:
-
-    strLine = strLine.upper()
-    strEncoded = ''
-
-    for strLetter in strLine:
-        
-        # skip non-alphabetic characters
-        if not strLetter.isalpha():
+        for strLetter in strLine:
             
-            if True == bKeepNonAlpha:
-                strEncoded += strLetter
+            # skip non-alphabetic characters
+            if not strLetter.isalpha():
+                
+                if True == self.bKeepNonAlpha:
+                    strEncoded += strLetter
 
-            continue
+                continue
 
-        for i in range(0, abs(iShift)):
+            iLetterIndex = self.dictCipher.get(strLetter)
+            
+            for i in range(0, abs(iShift)):
+                
+                # encode
+                if True == bEncode:
 
-            if 'A' == strLetter:
-                strLetter = 'Z'
+                    if self.iLast == iLetterIndex:
+                        iLetterIndex = 0
 
-            else:
-                strLetter = chr(ord(strLetter)-1)
+                    else:
+                        iLetterIndex += 1
 
-        strEncoded += strLetter
-    
-    return strEncoded
+                # decode
+                else:
+                    if 0 == iLetterIndex:
+                        iLetterIndex = self.iLast
 
-def encode(strInputFile: str, strOutputFile: str, iShift: int) -> None:
-    coder(True, strInputFile, strOutputFile, iShift)
+                    else:
+                        iLetterIndex -= 1
 
-def decode(strInputFile: str, strOutputFile: str, iShift: int) -> None:
-    coder(False, strInputFile, strOutputFile, iShift)
-
-def coder(bEncode: bool, strInputFile: str, strOutputFile: str, iShift: int) -> None:
+            strEncoded += self.strAlphaM[iLetterIndex]
         
-    if strOutputFile:
-        outputFile = open(strOutputFile, 'w')
+        if True == self.bPrintShift:
+            strEncoded = f'{iShift:<2} ' + strEncoded
 
-    inputFile = open(strInputFile, 'r')
-    strLine = inputFile.readline().strip()
-
-    while strLine:
-        
-        # encode
-        if True == bEncode:
-            strResult = encodeStr(strLine, iShift)
-
-        # decode
-        else:
-            strResult = decodeStr(strLine, iShift)
-
-        # write to file
+        # if writing result to output file
         if strOutputFile:
-            outputFile.write(strResult, iShift)
+            with open(strOutputFile, 'w') as outputFile:
+                outputFile.write(strEncoded)
+
+        return strEncoded
+
+    def encodeFile(self, strInputFile: str, iShift: int, strOutputFile=None, bRetStr=True) -> Union[str,None]:
+        return self.coderFile(True, strInputFile, iShift, strOutputFile=strOutputFile)
+
+    def decodeFile(self, strInputFile: str, iShift: int, strOutputFile=None, bRetStr=True) -> Union[str,None]:
+        return self.coderFile(False, strInputFile, iShift, strOutputFile=strOutputFile)
+
+    def coderFile(self, bEncode: bool, strInputFile: str, iShift: int, strOutputFile=None, bRetStr=True) -> Union[str,None]:
+            
+        with open(strInputFile, 'r') as inputFile:
+            
+            outputFile = None
+            if None != strOutputFile:
+                outputFile = open(strOutputFile, 'w')
+
+            strEncoded = ''
+            strLine = inputFile.readline()
+
+            while strLine:
+                
+                # encode
+                if True == bEncode:
+                    
+                    strCoded = self.encodeStr(strLine, iShift)
+
+                    if None != outputFile:
+                        outputFile.write(strCoded)
+
+                # decode
+                else:
+                    
+                    strCoded = self.decodeStr(strLine, iShift)
+
+                    if None != outputFile:
+                        outputFile.write(strCoded)
+
+                # if returning string
+                if True == bRetStr:
+                    strEncoded += strCoded
+                
+                strLine = inputFile.readline()
         
-        # print to console
+        if True == bRetStr:
+            return strEncoded
+
         else:
-            print(strResult)
-
-        strLine = inputFile.readline().strip()
-
-    if strOutputFile:
-        outputFile.close()
+            return None

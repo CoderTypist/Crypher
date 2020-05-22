@@ -10,17 +10,17 @@
 # def addCryptArgs(parser: argparse.ArgumentParser) -> None:
 #     - Add base arguments for encrypting/decrypting
 #
-# def isEncodeToConsole(dictArgs: dict) -> bool:
-#     - Return True if encoding the input and printing the output to the console
+# def isEncodeStr(dictArgs: dict) -> bool:
+#     - Return True if encoding a string
 #
-# def isDecodeToConsole(dictArgs: dict) -> bool:
-#     - Return True if decoding the input and printing the output to the console
+# def isDecodeStr(dictArgs: dict) -> bool:
+#     - Return True if decoding a string
 #
-# def isEncodeToFile(dictArgs: dict) -> bool:
-#     - Return True if encoding the input and writing the output to a file
+# def isEncodeFile(dictArgs: dict) -> bool:
+#     - Return True if encoding a file
 # 
-# def isDecodeToFile(dictArgs: dict) -> bool:
-#     - Return True if decoding the input and writing the output to a file
+# def isDecodeFile(dictArgs: dict) -> bool:
+#     - Return True if decoding a file
 
 import argparse
 
@@ -48,15 +48,14 @@ def addCryptArgs(parser: argparse.ArgumentParser) -> None:
 
     parser.add_argument('-o', '--output', help='output file')
 
-def isEncodeToConsole(dictArgs: dict) -> bool:
-    return True == dictArgs.get('encode') and None == dictArgs.get('output')
+def isEncodeStr(dictArgs: dict) -> bool:
+    return True == dictArgs.get('encode') and None != dictArgs.get('text')
 
-def isDecodeToConsole(dictArgs: dict) -> bool:
-    return True == dictArgs.get('decode') and None == dictArgs.get('output')
+def isDecodeStr(dictArgs: dict) -> bool:
+    return True == dictArgs.get('decode') and None != dictArgs.get('text')
 
-def isEncodeToFile(dictArgs: dict) -> bool:
-    return True == dictArgs.get('encode') and None != dictArgs.get('output')
+def isEncodeFile(dictArgs: dict) -> bool:
+    return True == dictArgs.get('encode') and None != dictArgs.get('input')
 
-def isDecodeToFile(dictArgs: dict) -> bool:
-    return True == dictArgs.get('decode') and None != dictArgs.get('output')
-    
+def isDecodeFile(dictArgs: dict) -> bool:
+    return True == dictArgs.get('decode') and None != dictArgs.get('input')

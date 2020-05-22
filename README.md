@@ -30,29 +30,52 @@ Encode and decode tap code. Tap code was commonly used by prisoners during the V
 
 Encode and decode messages using the classic ceasar cipher. 
 
+##### Encode String and Output to Console
+
+    ./ceasar.py -e -t <string> -s <num_shifts>
+
+##### Encode String and Output to File
+
+    ./ceasar.py -e -t <string> -s <num_shifts> -o <output_file>
+
+##### Decode String and Output to Console
+
+    ./ceasar.py -d -t <string> -s <num_shifts>
+
+##### Decode String and Output to File
+
+    ./ceasar.py -d -t <string> -s <num_shifts> -o <output_file>
 ##### Encode File and Output to Console
 
-    ./ceasar.py -e <input_file> -s <num_shifts>
+    ./ceasar.py -e -i <input_file> -s <num_shifts>
 
 ##### Encode File and Output to File
 
-    ./ceasar.py -e <input_file> -s <num_shifts> -o <output_file>
+    ./ceasar.py -e -i <input_file> -s <num_shifts> -o <output_file>
 
 ##### Decode File and Output to Console
 
-    ./ceasar.py -d <input_file> -s <num_shifts>
+    ./ceasar.py -d -i <input_file> -s <num_shifts>
 
 ##### Decode File and Output to File
 
-    ./ceasar.py -d <input_file> -s <num_shifts> -o <output_file>
+    ./ceasar.py -d -i <input_file> -s <num_shifts> -o <output_file>
 
-##### Decode (Bruteforce) and Output to Console
+##### Decode String (Bruteforce) and Output to Console
 
-    ./ceasar.py -e <input_file> -b
+    ./ceasar.py -d -t <string> -b
 
-##### Decode (Bruteforce) and Output to File
+##### Decode String (Bruteforce) and Output to File
 
-    ./ceasar.py -e <input_file> -b -o <output_file>
+    ./ceasar.py -d -t <string> -b -o <output_file>
+
+##### Decode File (Bruteforce) and Output to Console
+
+    ./ceasar.py -d -i <input_file> -b
+
+##### Decode File (Bruteforce) and Output to File
+
+    ./ceasar.py -d -i <input_file> -b -o <output_file>
 
 ##### Help
 
