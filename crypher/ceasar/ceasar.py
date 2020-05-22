@@ -3,7 +3,7 @@
 # Author: Christian Bargraser
 
 # INSTANCE ATTRIBUTES
-##################
+#####################
 # 
 # self.strAlphaM: list[str]
 #     - Alphabet used by the ceasar cipher
