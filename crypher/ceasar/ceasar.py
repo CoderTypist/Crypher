@@ -82,7 +82,7 @@ class CeasarCoder:
 
     def coderStr(self, bEncode: bool, strLine: str, iShift: int, strOutputFile=None) -> str:
         
-        iShift = iShift % (len(self.strAlphaM)-1)
+        iShift = iShift % self.iLast
         strLine = strLine.upper()
         strEncoded = ''
 
