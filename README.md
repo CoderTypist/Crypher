@@ -34,35 +34,35 @@ Encode and decode tap code. Tap code was commonly used by prisoners during the V
 
 #### Encode String and Output to Console
 
-./tap.py -e -t <string>
+./tap.py -e -t \<string\>
 
 #### Encode String and Output to File
 
-./tap.py -e -t <string> -o <output_file>
+./tap.py -e -t \<string\> -o \<output_file\>
 
 #### Decode String and Output to Console
 
-./tap.py -d -t <string>
+./tap.py -d -t \<string\>
 
 #### Decode String and Output to File
 
-./tap.py -d -t <string> -o <output_file>
+./tap.py -d -t \<string\> -o \<output_file\>
 
 #### Encode File and Output to Console
 
-./tap.py -e -i <input_file>
+./tap.py -e -i \<input_file\>
 
 #### Encode File and Output to File
 
-./tap.py -e -i <input_file> -o <output_file>
+./tap.py -e -i \<input_file\> -o \<output_file\>
 
 #### Decode File and Output to Console
 
-./tap.py -d -i <input_file>
+./tap.py -d -i \<input_file\>
 
 #### Decode File and Output to File
 
-./tap.py -d -i <input_file> -o <output_file>
+./tap.py -d -i \<input_file\> -o \<output_file\>
 
 #### Help
 
@@ -74,51 +74,51 @@ Encode and decode messages using the classic ceasar cipher.
 
 #### Encode String and Output to Console
 
-./ceasar.py -e -t <string> -s <num_shifts>
+./ceasar.py -e -t \<string\> -s \<num_shifts\>
 
 #### Encode String and Output to File
 
-./ceasar.py -e -t <string> -s <num_shifts> -o <output_file>
+./ceasar.py -e -t \<string\> -s \<num_shifts\> -o \<output_file\>
 
 #### Decode String and Output to Console
 
-./ceasar.py -d -t <string> -s <num_shifts>
+./ceasar.py -d -t \<string\> -s \<num_shifts\>
 
 #### Decode String and Output to File
 
-./ceasar.py -d -t <string> -s <num_shifts> -o <output_file>
+./ceasar.py -d -t \<string\> -s \<num_shifts\> -o \<output_file\>
 
 #### Encode File and Output to Console
 
-./ceasar.py -e -i <input_file> -s <num_shifts>
+./ceasar.py -e -i \<input_file\> -s \<num_shifts\>
 
 #### Encode File and Output to File
 
-./ceasar.py -e -i <input_file> -s <num_shifts> -o <output_file>
+./ceasar.py -e -i \<input_file\> -s \<num_shifts\> -o \<output_file\>
 
 #### Decode File and Output to Console
 
-./ceasar.py -d -i <input_file> -s <num_shifts>
+./ceasar.py -d -i \<input_file\> -s \<num_shifts\>
 
 #### Decode File and Output to File
 
-./ceasar.py -d -i <input_file> -s <num_shifts> -o <output_file>
+./ceasar.py -d -i \<input_file\> -s \<num_shifts\> -o \<output_file\>
 
 #### Decode String (Bruteforce) and Output to Console
 
-./ceasar.py -d -t <string> -b
+./ceasar.py -d -t \<string\> -b
 
 #### Decode String (Bruteforce) and Output to File
 
-./ceasar.py -d -t \<string\> -b -o <output_file>
+./ceasar.py -d -t \<string\> -b -o \<output_file\>
 
 #### Decode File (Bruteforce) and Output to Console
 
-./ceasar.py -d -i <input_file> -b
+./ceasar.py -d -i \<input_file\> -b
 
 #### Decode File (Bruteforce) and Output to File
 
-./ceasar.py -d -i <input_file> -b -o <output_file>
+./ceasar.py -d -i \<input_file\> -b -o \<output_file\>
 
 #### Help
 
