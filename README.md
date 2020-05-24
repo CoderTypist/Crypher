@@ -110,7 +110,7 @@ Encode and decode messages using the classic ceasar cipher.
 
 #### Decode String (Bruteforce) and Output to File
 
-./ceasar.py -d -t <string> -b -o <output_file>
+./ceasar.py -d -t \<string\> -b -o <output_file>
 
 #### Decode File (Bruteforce) and Output to Console
 
