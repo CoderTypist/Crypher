@@ -2,35 +2,29 @@
 
 # Author: Christian Bargraser
 
-# Encrypted text should be in the following format:
-#     #,#|#,#|#,#
-#
-# Example:
-#     1,3|1,1|4,2
-
+import os
+import sys
 import argparse
-from argparse import RawTextHelpFormatter
 import crypher.tap as tap
+import crypher.cryparse as cyp
 
-strEpilog = '''
-  **************
-  * UTSA - NSA *
-  **************
-  --- CAE-CO ---
-                
-'''
-
-parser = argparse.ArgumentParser(epilog=strEpilog, formatter_class=RawTextHelpFormatter)
-
-group_action = parser.add_mutually_exclusive_group(required=True)
-group_action.add_argument('-e', '--encode', help='plaintext file')
-group_action.add_argument('-d', '--decode', help='tap code encoded file')
-
-parser.add_argument('-o', '--output',  help = 'output file')
+parser = argparse.ArgumentParser()
+cyp.addCipherArgs(parser)
 dictArgs = vars(parser.parse_args())
 
-if dictArgs.get('encode'):
-    tap.encode(dictArgs.get('encode'), dictArgs.get('output'))
+if None != dictArgs.get('input') and not os.path.isfile(dictArgs.get('input')):
+    print('No such file:', dictArgs.get('input'), '\n')
+    parser.print_help()
+    sys.exit(1)
+
+if cyp.isEncodeStr(dictArgs):
+    print(tap.encodeStr(dictArgs.get('text'), strOutputFile=dictArgs.get('output')))
+
+elif cyp.isEncodeFile(dictArgs):
+    print(tap.encodeFile(dictArgs.get('input'), strOutputFile=dictArgs.get('output')))
+
+elif cyp.isDecodeStr(dictArgs):
+    print(tap.decodeStr(dictArgs.get('text'), strOutputFile=dictArgs.get('output')))
 
 else:
-    tap.decode(dictArgs.get('decode'), dictArgs.get('output'))
+    print(tap.decodeFile(dictArgs.get('input'), strOutputFile=dictArgs.get('output')))

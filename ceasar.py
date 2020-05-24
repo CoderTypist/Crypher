@@ -2,11 +2,6 @@
 
 # Author: Christian Bargraser
 
-# FUNCTIONS
-#
-# def printFile(strFileName: str) -> None:
-#     - prints the specified file 
-
 import os
 import sys
 import argparse
@@ -23,8 +18,7 @@ group_shift.add_argument('-b', '--bruteforce', action='store_true', help='try al
 dictArgs = vars(parser.parse_args())
 
 if None != dictArgs.get('input') and not os.path.isfile(dictArgs.get('input')):
-    print('No such file:', dictArgs.get('input'))
-    print()
+    print('No such file:', dictArgs.get('input'), '\n')
     parser.print_help()
     sys.exit(1)
 

@@ -13,6 +13,7 @@
 # 
 # self.dictCipher: dict[str, int]
 #     - Index for a letter in strAlphaM
+#     - Instead of doing a linear search for a letter in strAlphaM, retrieve the index in O(1)
 #     - key:str
 #     - value: int
 #
@@ -52,9 +53,10 @@
 # 
 # def coderFile(self, bEncode: bool, strInputFile: str, iShift: int, strOutputFile=None, bRetStr=True) -> Union[str,None]:
 #     - Either encode or decode a file
-#     - Has the option to save output to a file
-#     - If the input file is large, a large string (which may not be used) could be created.
-#           For this reason, returning a string is optional.
+#     - bRetStr specifies whether the resulting string is created and returned.
+#           Why enable and disable the returning of a String?
+#           The result of each call to encodeFile/decodeFile will be appended to strEncoded.
+#           This could result in a really string which may never be used.
 
 from .. import lman
 from typing import Union
@@ -74,13 +76,13 @@ class CeasarCoder:
             self.dictCipher[strLetter] = i
             i = i+1
     
-    def encodeStr(self, strLine: str, iShift: int, strOutputFile=None) -> str:
+    def encodeStr(self, strLine: str, iShift: int, strOutputFile=None) -> Union[str,None]:
         return self.coderStr(True, strLine, iShift, strOutputFile=strOutputFile)
 
-    def decodeStr(self, strLine: str, iShift: int, strOutputFile=None) -> str:
+    def decodeStr(self, strLine: str, iShift: int, strOutputFile=None) -> Union[str,None]:
         return self.coderStr(False, strLine, iShift, strOutputFile=strOutputFile)
 
-    def coderStr(self, bEncode: bool, strLine: str, iShift: int, strOutputFile=None) -> str:
+    def coderStr(self, bEncode: bool, strLine: str, iShift: int, strOutputFile=None) -> Union[str,None]:
         
         iShift = iShift % self.iLast
         strLine = strLine.upper()
@@ -130,10 +132,10 @@ class CeasarCoder:
         return strEncoded
 
     def encodeFile(self, strInputFile: str, iShift: int, strOutputFile=None, bRetStr=True) -> Union[str,None]:
-        return self.coderFile(True, strInputFile, iShift, strOutputFile=strOutputFile)
+        return self.coderFile(True, strInputFile, iShift, strOutputFile=strOutputFile, bRetStr=bRetStr)
 
     def decodeFile(self, strInputFile: str, iShift: int, strOutputFile=None, bRetStr=True) -> Union[str,None]:
-        return self.coderFile(False, strInputFile, iShift, strOutputFile=strOutputFile)
+        return self.coderFile(False, strInputFile, iShift, strOutputFile=strOutputFile, bRetStr=bRetStr)
 
     def coderFile(self, bEncode: bool, strInputFile: str, iShift: int, strOutputFile=None, bRetStr=True) -> Union[str,None]:
             
@@ -149,20 +151,16 @@ class CeasarCoder:
             while strLine:
                 
                 # encode
-                if True == bEncode:
-                    
+                if True == bEncode:                  
                     strCoded = self.encodeStr(strLine, iShift)
-
-                    if None != outputFile:
-                        outputFile.write(strCoded)
 
                 # decode
                 else:
-                    
                     strCoded = self.decodeStr(strLine, iShift)
 
-                    if None != outputFile:
-                        outputFile.write(strCoded)
+                # if writing to file
+                if None != outputFile:
+                    outputFile.write(strCoded)
 
                 # if returning string
                 if True == bRetStr:
@@ -172,6 +170,3 @@ class CeasarCoder:
         
         if True == bRetStr:
             return strEncoded
-
-        else:
-            return None

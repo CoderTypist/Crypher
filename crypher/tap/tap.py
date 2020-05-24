@@ -10,16 +10,17 @@
 # def decodeStr(strLine: str) -> str:
 #     - Decode a string
 #
-# def encode(strInputFile: str, strOutputFile: str) -> None:
+# def encodeFile(strInputFile: str, strOutputFile=None, bRetStr=True) -> Union[str,None]:
 #     - Encode a file
 #
-# def decode(strInputFile: str, strOutputFile: str) -> None:
+# def decodeFile(strInputFile: str, strOutputFile=None, bRetStr=True) -> Union[str,None]:
 #     - Decode a file
 #
-# def tapcode(bEncode: bool, strInputFile: str, strOutputFile: str) -> None:
+# def coderFile(bEncode: bool, strInputFile: str, strOutputFile=None, bRetStr=True) -> Union[str,None]:
 #     - Either encode or decode a file
 
 import os
+from typing import Union
 
 decodeDict = {
     
@@ -80,7 +81,7 @@ encodeDict = {
     'Z' : '5,5'
 }
 
-def encodeStr(strLine: str) -> str:
+def encodeStr(strLine: str, strOutputFile=None) -> str:
     
     strEncodedText = '' 
 
@@ -108,9 +109,14 @@ def encodeStr(strLine: str) -> str:
 
         strEncodedText += strEncodedLetter
     
+    # if writing result to output file
+    if strOutputFile:
+        with open(strOutputFile, 'w') as outputFile:
+            outputFile.write(strEncodedText)
+
     return strEncodedText
 
-def decodeStr(strLine: str, bProcessBadInput=False) -> str:
+def decodeStr(strLine: str, strOutputFile=None) -> str:
 
     strEncodedPairsM = strLine.split('|')
     strDecodedText = ''
@@ -129,19 +135,25 @@ def decodeStr(strLine: str, bProcessBadInput=False) -> str:
 
         strDecodedText += strDecodedPair
 
+    # if writing result to output file
+    if strOutputFile:
+        with open(strOutputFile, 'w') as outputFile:
+            outputFile.write(strDecodedText)
+
     return strDecodedText
 
-def encode(strInputFile: str, strOutputFile: str) -> None:
-    coder(True, strInputFile, strOutputFile)
+def encodeFile(strInputFile: str, strOutputFile=None, bRetStr=True) -> Union[str,None]:
+    return coderFile(True, strInputFile, strOutputFile=strOutputFile, bRetStr=bRetStr)
 
-def decode(strInputFile: str, strOutputFile: str) -> None:
-    coder(False, strInputFile, strOutputFile)
+def decodeFile(strInputFile: str, strOutputFile=None, bRetStr=True) -> Union[str,None]:
+    return coderFile(False, strInputFile, strOutputFile=strOutputFile, bRetStr=bRetStr)
 
-def coder(bEncode: bool, strInputFile: str, strOutputFile: str) -> None:
+def coderFile(bEncode: bool, strInputFile: str, strOutputFile=None, bRetStr=True) -> Union[str,None]:
     
     if strOutputFile:
         outputFile = open(strOutputFile, 'w')
 
+    strEncoded = ''
     inputFile = open(strInputFile, 'r')
     strLine = inputFile.readline().strip()
 
@@ -149,21 +161,24 @@ def coder(bEncode: bool, strInputFile: str, strOutputFile: str) -> None:
         
         # encode
         if True == bEncode:
-            strResult = encodeStr(strLine)
+            strCoded = encodeStr(strLine)
 
         # decode
         else:
-            strResult = decodeStr(strLine)
+            strCoded = decodeStr(strLine)
 
-        # write to file
+        # if writing to file
         if strOutputFile:
-            outputFile.write(strResult)
+            outputFile.write(strCoded)
         
-        # print to console
-        else:
-            print(strResult)
+        # if returning string
+        if True == bRetStr:
+            strEncoded += strCoded
 
         strLine = inputFile.readline().strip()
 
     if strOutputFile:
         outputFile.close()
+
+    if True == bRetStr:
+        return strEncoded
