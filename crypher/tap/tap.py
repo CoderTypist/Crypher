@@ -4,19 +4,19 @@
 
 # FUNCTIONS
 #
-# def encodeStr(strLine: str) -> str:
+# def encodeStr(strLine: str, strOutputFile: str=None) -> str:
 #     - Encode a string
 #
-# def decodeStr(strLine: str) -> str:
+# def decodeStr(strLine: str, strOutputFile: str=None) -> str:
 #     - Decode a string
 #
-# def encodeFile(strInputFile: str, strOutputFile=None, bRetStr=True) -> Union[str,None]:
+# def encodeFile(strInputFile: str, strOutputFile: str=None, bRetStr: bool=True) -> Union[str,None]:
 #     - Encode a file
 #
-# def decodeFile(strInputFile: str, strOutputFile=None, bRetStr=True) -> Union[str,None]:
+# def decodeFile(strInputFile: str, strOutputFile: str=None, bRetStr: bool=True) -> Union[str,None]:
 #     - Decode a file
 #
-# def coderFile(bEncode: bool, strInputFile: str, strOutputFile=None, bRetStr=True) -> Union[str,None]:
+# def coderFile(bEncode: bool, strInputFile: str, strOutputFile: str=None, bRetStr: bool=True) -> Union[str,None]:
 #     - Either encode or decode a file
 
 import os
@@ -81,7 +81,7 @@ encodeDict = {
     'Z' : '5,5'
 }
 
-def encodeStr(strLine: str, strOutputFile=None) -> str:
+def encodeStr(strLine: str, strOutputFile: str=None) -> str:
     
     strEncodedText = '' 
 
@@ -116,7 +116,7 @@ def encodeStr(strLine: str, strOutputFile=None) -> str:
 
     return strEncodedText
 
-def decodeStr(strLine: str, strOutputFile=None) -> str:
+def decodeStr(strLine: str, strOutputFile: str=None) -> str:
 
     strEncodedPairsM = strLine.split('|')
     strDecodedText = ''
@@ -142,13 +142,13 @@ def decodeStr(strLine: str, strOutputFile=None) -> str:
 
     return strDecodedText
 
-def encodeFile(strInputFile: str, strOutputFile=None, bRetStr=True) -> Union[str,None]:
+def encodeFile(strInputFile: str, strOutputFile: str=None, bRetStr: bool=True) -> Union[str,None]:
     return coderFile(True, strInputFile, strOutputFile=strOutputFile, bRetStr=bRetStr)
 
-def decodeFile(strInputFile: str, strOutputFile=None, bRetStr=True) -> Union[str,None]:
+def decodeFile(strInputFile: str, strOutputFile: str=None, bRetStr: bool=True) -> Union[str,None]:
     return coderFile(False, strInputFile, strOutputFile=strOutputFile, bRetStr=bRetStr)
 
-def coderFile(bEncode: bool, strInputFile: str, strOutputFile=None, bRetStr=True) -> Union[str,None]:
+def coderFile(bEncode: bool, strInputFile: str, strOutputFile: str=None, bRetStr: bool=True) -> Union[str,None]:
     
     if strOutputFile:
         outputFile = open(strOutputFile, 'w')

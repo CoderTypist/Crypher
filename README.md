@@ -10,7 +10,7 @@ Crypher is a series of Python packages that can encode and decode various cipher
 
 ### tap
 
-Functions for encoding/decoding tap code
+Functions for encoding/decoding tap code.
 
 ### ceasar
 

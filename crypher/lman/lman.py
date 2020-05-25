@@ -18,13 +18,32 @@
 #     - If iRot is positive, the list is rotated to the right
 #     - If iRot is negative, the list is rotates to the left
 #
-# def listToGrid(arr: list) -> list:
+# def listToListGrid(arr: list) -> list:
 #     - Returns a 2-dimensional list
 #     - Dimensions: len(arr) x len(arr)
 #     - Each row is rotated to the right <row#/index#> times
 #
-# def printGrid(grid: list) -> None:
+# def printListGrid(grid: list) -> None:
 #     - Prints each row in the grid on its own line
+#
+# def listToNpGrid(arr: list) -> list:
+#     - Returns an 2-dimensional np.array()
+#     - Dimensions: len(arr) x len(arr) 
+#     - Each row is rotated to the right <row#/index#> times
+#     - Grid is initially created by calling listToListGrid()
+#
+# def def listToIncDict(arr: list) -> dict:
+#     - Returns a dictionary created from the list
+#     - The keys are the values from the list
+#     - The values are assigned incrementally starting from 0
+#
+# def isset(arr: list) -> bool:
+#     - Returns True if arr is a set, otherwise False is returned
+#
+# def similar(arrOne: list, arrTwo: list) -> bool:
+#     - Returns True if arrOne and arrTWo contain the same elements, otherwise False is returned
+
+import numpy as np
 
 def listAlpha() -> list:
     return [chr(x) for x in range(ord('A'), ord('Z')+1)]
@@ -56,9 +75,9 @@ def rot(arr: list, iRot: int) -> list:
 
     return arr
 
-def listToGrid(arr: list) -> list:
+def listToListGrid(arr: list) -> list:
     
-    if not arr:
+    if None == arr:
         return arr
 
     grid = []
@@ -67,7 +86,34 @@ def listToGrid(arr: list) -> list:
 
     return grid
 
-def printGrid(grid: list) -> None:
+def printListGrid(grid: list) -> None:
 
     for subList in grid:
         print(subList)
+
+def listToNpGrid(arr: list) -> list:
+    return np.array(listToListGrid(arr))    
+
+def listToIncDict(arr: list) -> dict:
+
+    if None == arr:
+        return arr
+
+    arrDict = {}
+    i = 0
+
+    for item in arr:
+        arrDict[item] = i
+        i += 1
+
+    return arrDict
+
+def isset(arr: list) -> bool:
+
+    if None == arr:
+        return False
+
+    return len(arr) == len(set(arr))
+
+def similar(arrOne: list, arrTwo: list) -> bool:
+    return arrOne().sort == arrTwo.sort()
