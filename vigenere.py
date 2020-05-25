@@ -20,16 +20,16 @@ if None != dictArgs.get('input') and not os.path.isfile(dictArgs.get('input')):
     parser.print_help()
     sys.exit(1)
 
-coder = vig.VigenereCoder()
+coder = vig.VigenereCoder(dictArgs.get('key'))
 
 if cyp.isEncodeStr(dictArgs):
-    print(coder.encodeStr(dictArgs.get('text'), dictArgs.get('key'), strOutputFile=dictArgs.get('output')))
+    print(coder.encodeStr(dictArgs.get('text'), strOutputFile=dictArgs.get('output')))
 
 elif cyp.isEncodeFile(dictArgs):
-    print(coder.encodeFile(dictArgs.get('input'), dictArgs.get('key'), strOutputFile=dictArgs.get('output')))
+    print(coder.encodeFile(dictArgs.get('input'), strOutputFile=dictArgs.get('output')))
 
 elif cyp.isDecodeStr(dictArgs):
-    print(coder.decodeStr(dictArgs.get('text'), dictArgs.get('key'), strOutputFile=dictArgs.get('output')))
+    print(coder.decodeStr(dictArgs.get('text'), strOutputFile=dictArgs.get('output')))
 
 else:
-    print(coder.decodeFile(dictArgs.get('input'), dictArgs.get('key'), strOutputFile=dictArgs.get('output')))
+    print(coder.decodeFile(dictArgs.get('input'), strOutputFile=dictArgs.get('output')))

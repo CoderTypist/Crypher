@@ -11,6 +11,9 @@
 # self.iLast: str
 #     - Index of the last character in self.strAlphaM
 # 
+# self._iShift: int
+#     - Number of times to shift a character along self.strAlphaM
+#
 # self.dictCipher: dict[str, int]
 #     - Index for a letter in strAlphaM
 #     - Instead of doing a linear search for a letter in strAlphaM, retrieve the index in O(1)
@@ -18,70 +21,68 @@
 #     - value: int
 #
 # self.bKeepUnknown: bool
-#     - Keep characters that are not letters
+#     - Keep characters that are not in self.strAlphaM
 #
 # self.bPrintShift: bool
-#     - Include the number of shifts performed in the result
+#     - Prepend the number of shifts performed to the result
 #
 # FUNCTIONS
 # #########
 # 
 # def __init__(self, strAlphaM: List[str]=lman.listAlpha(), bKeepUnknown: bool=True):
-#     - Create new instance of CeasarCoder
 #     - strAlphaM is set to a list with 'A' to 'Z' inclusive
-#     - strAlphaM allows the CeasarCoder to have a different alphabet
 # 
-# def encodeStr(self, strLine: str, iShift: int, strOutputFile: str=None) -> str:
-#     - Encode a string
-#     - Invokes coderStr()
-# 
-# def decodeStr(self, strLine: str, iShift: int, strOutputFile: str=None) -> str:
-#     - Decode a string
-#     - Invokes coderStr()
-# 
-# def coderStr(self, bEncode: bool, strLine: str, iShift: int, strOutputFile: str=None) -> str:
+# def __coderStr(self, bEncode: bool, strLine: str, iShift: int, strOutputFile: str=None) -> str:
 #     - Either encode or decode a string
-#     - Has the option to save output to a file
+# 
+# IMPLEMENTED FUNCTIONS
+# #####################
+# 
+# def encodeStr(self, strLine: str, iShift: int, strOutputFile: str=None) -> str: 
+# def decodeStr(self, strLine: str, iShift: int, strOutputFile: str=None) -> str:
+# 
+# INHERITED FUNCTIONS
+# ###################
 # 
 # def encodeFile(self, strInputFile: str, iShift: int, strOutputFile: str=None, bRetStr: bool=True) -> Union[str,None]:
-#     - Encode a file
-#     - Invokes coderFile()
-# 
 # def decodeFile(self, strInputFile: str, iShift: int, strOutputFile: str=None, bRetStr: bool=True) -> Union[str,None]:
-#     - Decode a file
-#     - Invokes coderFile()
-# 
 # def coderFile(self, bEncode: bool, strInputFile: str, iShift: int, strOutputFile: str=None, bRetStr: bool=True) -> Union[str,None]:
-#     - Either encode or decode a file
-#     - bRetStr specifies whether the resulting string is created and returned.
-#           Why enable and disable the returning of a String?
-#           The result of each call to encodeFile/decodeFile will be appended to strEncoded.
-#           This could result in a really string which may never be used.
 
 from .. import lman
+from .. import coder
 from typing import Union, List
 
-class CeasarCoder:
+class CeasarCoder(coder.CipherCoder):
 
-    def __init__(self, strAlphaM: List[str]=lman.listAlpha(), bKeepUnknown: bool=True):
-
+    def __init__(self, iShift: int, strAlphaM: List[str]=lman.listAlpha(), bKeepUnknown: bool=True):
+        
         self.strAlphaM = strAlphaM
         self.iLast = len(strAlphaM) - 1
+        self.iShift = iShift
         self.dictCipher = lman.listToIncDict(self.strAlphaM)
         self.bKeepUnknown = True
         self.bPrintShift = False
     
-    def encodeStr(self, strLine: str, iShift: int, strOutputFile: str=None) -> str:
-        return self.coderStr(True, strLine, iShift, strOutputFile=strOutputFile)
+    @property
+    def iShift():
+        return self._iShift
 
-    def decodeStr(self, strLine: str, iShift: int, strOutputFile: str=None) -> str:
-        return self.coderStr(False, strLine, iShift, strOutputFile=strOutputFile)
+    @iShift.setter
+    def iShift(self, iShift):
+        self._iShift = abs(iShift) % self.iLast
 
-    def coderStr(self, bEncode: bool, strLine: str, iShift: int, strOutputFile: str=None) -> str:
+    # override
+    def encodeStr(self, strLine: str, strOutputFile: str=None) -> str:
+        return self.__coderStr(True, strLine, strOutputFile=strOutputFile)
+
+    # override
+    def decodeStr(self, strLine: str, strOutputFile: str=None) -> str:
+        return self.__coderStr(False, strLine,strOutputFile=strOutputFile)
+
+    def __coderStr(self, bEncode: bool, strLine: str, strOutputFile: str=None) -> str:
         
-        iShift = iShift % self.iLast
         strLine = strLine.upper()
-        strEncoded = ''
+        strCoded = ''
 
         for strLetter in strLine:
             
@@ -89,13 +90,13 @@ class CeasarCoder:
             if not strLetter.isalpha():
                 
                 if True == self.bKeepUnknown:
-                    strEncoded += strLetter
+                    strCoded += strLetter
 
                 continue
 
             iLetterIndex = self.dictCipher.get(strLetter)
             
-            for i in range(0, abs(iShift)):
+            for i in range(0, self._iShift):
                 
                 # encode
                 if True == bEncode:
@@ -114,54 +115,14 @@ class CeasarCoder:
                     else:
                         iLetterIndex -= 1
 
-            strEncoded += self.strAlphaM[iLetterIndex]
+            strCoded += self.strAlphaM[iLetterIndex]
         
         if True == self.bPrintShift:
-            strEncoded = f'{iShift:<2} ' + strEncoded
+            strCoded = f'{self._iShift:<2} ' + strCoded
 
         # if writing result to output file
         if strOutputFile:
             with open(strOutputFile, 'w') as outputFile:
                 outputFile.write(strEncoded)
 
-        return strEncoded
-
-    def encodeFile(self, strInputFile: str, iShift: int, strOutputFile: str=None, bRetStr: bool=True) -> Union[str,None]:
-        return self.coderFile(True, strInputFile, iShift, strOutputFile=strOutputFile, bRetStr=bRetStr)
-
-    def decodeFile(self, strInputFile: str, iShift: int, strOutputFile: str=None, bRetStr: bool=True) -> Union[str,None]:
-        return self.coderFile(False, strInputFile, iShift, strOutputFile=strOutputFile, bRetStr=bRetStr)
-
-    def coderFile(self, bEncode: bool, strInputFile: str, iShift: int, strOutputFile: str=None, bRetStr: bool=True) -> Union[str,None]:
-            
-        with open(strInputFile, 'r') as inputFile:
-            
-            outputFile = None
-            if None != strOutputFile:
-                outputFile = open(strOutputFile, 'w')
-
-            strEncoded = ''
-            strLine = inputFile.readline()
-
-            while strLine:
-                
-                # encode
-                if True == bEncode:                  
-                    strCoded = self.encodeStr(strLine, iShift)
-
-                # decode
-                else:
-                    strCoded = self.decodeStr(strLine, iShift)
-
-                # if writing to file
-                if None != outputFile:
-                    outputFile.write(strCoded)
-
-                # if returning string
-                if True == bRetStr:
-                    strEncoded += strCoded
-                
-                strLine = inputFile.readline()
-        
-        if True == bRetStr:
-            return strEncoded
+        return strCoded

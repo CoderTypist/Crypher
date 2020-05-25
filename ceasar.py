@@ -22,22 +22,22 @@ if None != dictArgs.get('input') and not os.path.isfile(dictArgs.get('input')):
     parser.print_help()
     sys.exit(1)
 
-coder = cea.CeasarCoder()
+cipher = cea.CeasarCoder(dictArgs.get('shift'))
 
 # not bruceforce
 if False == dictArgs.get('bruteforce'):
 
     if cyp.isEncodeStr(dictArgs):
-        print(coder.encodeStr(dictArgs.get('text'), dictArgs.get('shift'), strOutputFile=dictArgs.get('output')))
+        print(cipher.encodeStr(dictArgs.get('text'), strOutputFile=dictArgs.get('output')))
 
     elif cyp.isEncodeFile(dictArgs):
-        print(coder.encodeFile(dictArgs.get('input'), dictArgs.get('shift'), strOutputFile=dictArgs.get('output')))
+        print(cipher.encodeFile(dictArgs.get('input'), strOutputFile=dictArgs.get('output')))
 
     elif cyp.isDecodeStr(dictArgs):
-        print(coder.decodeStr(dictArgs.get('text'), dictArgs.get('shift'), strOutputFile=dictArgs.get('output')))
+        print(cipher.decodeStr(dictArgs.get('text'), strOutputFile=dictArgs.get('output')))
     
     else:
-        print(coder.decodeFile(dictArgs.get('input'), dictArgs.get('shift'), strOutputFile=dictArgs.get('output')))
+        print(cipher.decodeFile(dictArgs.get('input'), strOutputFile=dictArgs.get('output')))
 
 # bruteforce
 else:
@@ -45,17 +45,21 @@ else:
     coder.bPrintShift = True
 
     if cyp.isEncodeStr(dictArgs):
-        for i in range(0, len(coder.strAlphaM)):
-            print(coder.encodeStr(dictArgs.get('text'), i, strOutputFile=dictArgs.get('output')))
+        for i in range(0, len(cipher.strAlphaM)):
+            cipher.iShift = i
+            print(cipher.encodeStr(dictArgs.get('text'), strOutputFile=dictArgs.get('output')))
     
     elif cyp.isEncodeFile(dictArgs):
-        for i in range(0, len(coder.strAlphaM)):
-            print(coder.encodeFile(dictArgs.get('input'), i, strOutputFile=dictArgs.get('output')))
+        for i in range(0, len(cipher.strAlphaM)):
+            cipher.iShift = i
+            print(cipher.encodeFile(dictArgs.get('input'), strOutputFile=dictArgs.get('output')))
 
     elif cyp.isDecodeStr(dictArgs):
-        for i in range(0, len(coder.strAlphaM)):
-            print(coder.decodeStr(dictArgs.get('text'), i, strOutputFile=dictArgs.get('output')))
+        for i in range(0, len(cipher.strAlphaM)):
+            cipher.iShift = i
+            print(cipher.decodeStr(dictArgs.get('text'), strOutputFile=dictArgs.get('output')))
 
     else:
-        for i in range(0, len(coder.strAlphaM)):
-            print(coder.decodeFile(dictArgs.get('input'), i, strOutputFile=dictArgs.get('output')))
+        for i in range(0, len(cipher.strAlphaM)):
+            cipher.iShift = i
+            print(cipher.decodeFile(dictArgs.get('input'), strOutputFile=dictArgs.get('output')))

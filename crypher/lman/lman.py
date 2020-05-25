@@ -116,4 +116,4 @@ def isset(arr: list) -> bool:
     return len(arr) == len(set(arr))
 
 def similar(arrOne: list, arrTwo: list) -> bool:
-    return arrOne().sort == arrTwo.sort()
+    return arrOne.copy().sort() == arrTwo.copy().sort()

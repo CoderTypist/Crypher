@@ -1,6 +1,6 @@
 # Crypher
 
-Crypher is a series of Python packages that can encode and decode various ciphers
+Crypher is a series of Python packages that can encode and decode various ciphers.
 
 ## Supported Ciphers
 - Tap Code (tap.py)
@@ -25,6 +25,10 @@ Functions for analyzing the dictionary of arguments.
 ### lman
 
 Functions for list creation and manipulation.
+
+### coder
+
+Abstract classes CipherCoder and CryptCoder.
 
 ## Command Line Examples
 
@@ -123,3 +127,43 @@ Encode and decode messages using the classic ceasar cipher.
 #### Help
 
 ./ceasar.py -h
+
+### vigenere.py
+
+Encode and decode messages using the classic ceasar cipher. 
+
+#### Encode String and Output to Console
+
+./vigenere.py -e -t \<string\> -k \<key\>
+
+#### Encode String and Output to File
+
+./vigenere.py -e -t \<string\> -k \<key\> -o \<output_file\>
+
+#### Decode String and Output to Console
+
+./vigenere.py -d -t \<string\> -k \<key\>
+
+#### Decode String and Output to File
+
+./vigenere.py -d -t \<string\> -k \<key\> -o \<output_file\>
+
+#### Encode File and Output to Console
+
+./vigenere.py -e -i \<input_file\> -k \<key\>
+
+#### Encode File and Output to File
+
+./vigenere.py -e -i \<input_file\> -k \<key\> -o \<output_file\>
+
+#### Decode File and Output to Console
+
+./vigenere.py -d -i \<input_file\> -k \<key\>
+
+#### Decode File and Output to File
+
+./vigenere.py -d -i \<input_file\> -k \<key\> -o \<output_file\>
+
+#### Help
+
+./vigenere.py -h
