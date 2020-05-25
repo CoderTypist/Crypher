@@ -30,9 +30,7 @@ Functions for list creation and manipulation.
 
 Abstract classes CipherCoder and CryptCoder.
 
-## Command Line Examples
-
-### tap.py
+## tap.py
 
 Encode and decode tap code. Tap code was commonly used by prisoners during the Vietnam War. 
 
@@ -72,7 +70,7 @@ Encode and decode tap code. Tap code was commonly used by prisoners during the V
 
 ./tap.py -h
 
-### ceasar.py
+## ceasar.py
 
 Encode and decode messages using the classic ceasar cipher. 
 
@@ -128,7 +126,7 @@ Encode and decode messages using the classic ceasar cipher.
 
 ./ceasar.py -h
 
-### vigenere.py
+## vigenere.py
 
 Encode and decode messages using the classic ceasar cipher. 
 
